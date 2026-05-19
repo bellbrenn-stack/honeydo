@@ -37,17 +37,17 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary">
-      <Card className="w-full max-w-md shadow-lg">
-        <CardHeader className="text-center space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[oklch(0.97_0.06_85)] via-[oklch(0.95_0.05_68)] to-[oklch(0.92_0.06_140)]">
+      <Card className="w-full max-w-md shadow-xl border-0">
+        <CardHeader className="text-center space-y-4 pb-2">
           <div className="flex justify-center">
-            <div className="flex items-center gap-2 text-primary">
+            <div className="flex items-center gap-2.5 text-primary">
               <Heart className="h-7 w-7 fill-primary" />
-              <span className="text-2xl font-semibold tracking-tight">HoneyDo</span>
+              <span className="text-3xl font-bold tracking-tight">HoneyDo</span>
             </div>
           </div>
           <div>
-            <CardTitle>Welcome back</CardTitle>
+            <CardTitle className="text-xl">Welcome back</CardTitle>
             <CardDescription>Sign in to your planning dashboard</CardDescription>
           </div>
         </CardHeader>

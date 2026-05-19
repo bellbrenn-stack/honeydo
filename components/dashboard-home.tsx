@@ -78,82 +78,82 @@ export function DashboardHome({ wedding, checklistItems, budgetItems, vendors }:
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Countdown */}
-        <Card>
+        {/* Countdown — cantaloupe */}
+        <Card className="border-0 bg-[oklch(0.94_0.08_50)]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-medium text-[oklch(0.42_0.08_44)]">
               Days to go
             </CardTitle>
-            <Heart className="h-4 w-4 text-primary" />
+            <Heart className="h-4 w-4 fill-primary text-primary" />
           </CardHeader>
           <CardContent>
             {daysUntil !== null ? (
               <>
-                <p className="text-3xl font-bold text-primary">
+                <p className="text-4xl font-bold text-[oklch(0.42_0.10_44)]">
                   {daysUntil > 0 ? daysUntil : 0}
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {daysUntil > 0 ? `until your big day` : "Today's the day!"}
+                <p className="text-xs text-[oklch(0.52_0.06_44)] mt-1">
+                  {daysUntil > 0 ? "until your big day" : "Today's the day!"}
                 </p>
               </>
             ) : (
-              <p className="text-sm text-muted-foreground">Set your wedding date</p>
+              <p className="text-sm text-[oklch(0.52_0.06_44)]">Set your wedding date</p>
             )}
           </CardContent>
         </Card>
 
-        {/* Checklist progress */}
-        <Card>
+        {/* Checklist progress — sage */}
+        <Card className="border-0 bg-[oklch(0.92_0.06_140)]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-medium text-[oklch(0.38_0.08_140)]">
               Planning progress
             </CardTitle>
-            <CheckCircle2 className="h-4 w-4 text-primary" />
+            <CheckCircle2 className="h-4 w-4 text-[oklch(0.48_0.10_140)]" />
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{checklistProgress.pct}%</p>
-            <Progress value={checklistProgress.pct} className="mt-2 h-1.5" />
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-4xl font-bold text-[oklch(0.38_0.08_140)]">{checklistProgress.pct}%</p>
+            <Progress value={checklistProgress.pct} className="mt-2 h-1.5 bg-[oklch(0.82_0.06_140)]" />
+            <p className="text-xs text-[oklch(0.48_0.08_140)] mt-1">
               {checklistProgress.done} of {checklistProgress.total} tasks done
             </p>
           </CardContent>
         </Card>
 
-        {/* Budget */}
-        <Card>
+        {/* Budget — barley gold */}
+        <Card className="border-0 bg-[oklch(0.94_0.07_82)]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-medium text-[oklch(0.42_0.07_75)]">
               Budget remaining
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-primary" />
+            <DollarSign className="h-4 w-4 text-[oklch(0.52_0.09_75)]" />
           </CardHeader>
           <CardContent>
             {budgetSummary.total > 0 ? (
               <>
-                <p className="text-3xl font-bold">
+                <p className="text-4xl font-bold text-[oklch(0.42_0.08_75)]">
                   ${budgetSummary.remaining.toLocaleString()}
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-[oklch(0.52_0.06_75)] mt-1">
                   of ${budgetSummary.total.toLocaleString()} budget
                 </p>
               </>
             ) : (
-              <p className="text-sm text-muted-foreground">Set your budget</p>
+              <p className="text-sm text-[oklch(0.52_0.06_75)]">Set your budget</p>
             )}
           </CardContent>
         </Card>
 
-        {/* Vendors */}
-        <Card>
+        {/* Vendors — guava coral */}
+        <Card className="border-0 bg-[oklch(0.94_0.05_18)]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-sm font-medium text-[oklch(0.42_0.08_18)]">
               Vendors booked
             </CardTitle>
-            <Users className="h-4 w-4 text-primary" />
+            <Users className="h-4 w-4 text-[oklch(0.52_0.10_18)]" />
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{bookedVendors}</p>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-4xl font-bold text-[oklch(0.42_0.08_18)]">{bookedVendors}</p>
+            <p className="text-xs text-[oklch(0.52_0.08_18)] mt-1">
               of {vendors.length} vendors added
             </p>
           </CardContent>
