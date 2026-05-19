@@ -1,0 +1,395 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  COUPLE
+  PLANNER
+  VENDOR
+  FAMILY
+}
+
+enum WeddingStyle {
+  TRADITIONAL
+  BACKYARD
+  MICRO
+  ELOPEMENT
+  LDS
+  DESTINATION
+  DIY
+  LUXURY
+}
+
+enum ChecklistStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
+}
+
+enum ChecklistCategory {
+  VENUE
+  CATERING
+  PHOTOGRAPHY
+  VIDEOGRAPHY
+  FLORALS
+  ATTIRE
+  BEAUTY
+  MUSIC
+  OFFICIANT
+  TRANSPORTATION
+  STATIONERY
+  HONEYMOON
+  CEREMONY
+  RECEPTION
+  LOGISTICS
+  LEGAL
+  OTHER
+}
+
+enum BudgetCategory {
+  VENUE
+  CATERING
+  PHOTOGRAPHY
+  VIDEOGRAPHY
+  FLORALS
+  ATTIRE
+  BEAUTY
+  MUSIC
+  OFFICIANT
+  TRANSPORTATION
+  STATIONERY
+  HONEYMOON
+  DECOR
+  RENTALS
+  LIGHTING
+  CAKE
+  FAVORS
+  OTHER
+}
+
+enum PaymentStatus {
+  UNPAID
+  DEPOSIT_PAID
+  PAID_IN_FULL
+}
+
+enum VendorCategory {
+  VENUE
+  PHOTOGRAPHY
+  VIDEOGRAPHY
+  FLORALS
+  DJ
+  BAND
+  PLANNER
+  COORDINATOR
+  CATERING
+  CAKE
+  RENTALS
+  BEAUTY
+  TRANSPORTATION
+  OFFICIANT
+  STATIONERY
+  OTHER
+}
+
+enum TimelineType {
+  GETTING_READY
+  CEREMONY
+  PORTRAITS
+  COCKTAIL_HOUR
+  RECEPTION
+  SEND_OFF
+  VENDOR_ARRIVAL
+  OTHER
+}
+
+enum NoteCategory {
+  DECOR
+  CATERING
+  ATTIRE
+  LOGISTICS
+  PHOTOGRAPHY
+  HONEYMOON
+  REHEARSAL
+  CEREMONY
+  GENERAL
+}
+
+enum MoodboardCategory {
+  FLORALS
+  ATTIRE
+  TABLESCAPE
+  CEREMONY
+  SIGNAGE
+  LIGHTING
+  CAKE
+  HAIR_MAKEUP
+  VENUE
+  DECOR
+  GENERAL
+}
+
+enum NotificationType {
+  TASK_DUE
+  PAYMENT_DUE
+  VENDOR_MESSAGE
+  CHECKLIST_REMINDER
+  TIMELINE_UPDATED
+  ACCOUNT_CREATED
+  GENERAL
+}
+
+// ─── Tenant ───────────────────────────────────────────────────────────────────
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users    User[]
+  weddings Wedding[]
+}
+
+// ─── User ─────────────────────────────────────────────────────────────────────
+
+model User {
+  id             String   @id @default(cuid())
+  tenantId       String
+  name           String
+  email          String
+  hashedPassword String
+  role           Role     @default(COUPLE)
+  phone          String?
+  active         Boolean  @default(true)
+  isAdmin        Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  weddingAccess WeddingMember[]
+  notifications Notification[]
+  notes         Note[]
+  uploadedFiles VendorFile[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([role])
+}
+
+// ─── Wedding ──────────────────────────────────────────────────────────────────
+
+model Wedding {
+  id           String       @id @default(cuid())
+  tenantId     String
+  name         String
+  weddingDate  DateTime?
+  venue        String?
+  city         String?
+  state        String?
+  guestCount   Int?
+  budget       Float?
+  style        WeddingStyle @default(TRADITIONAL)
+  hasDIY       Boolean      @default(false)
+  hasPlanner   Boolean      @default(false)
+  sunsetTime   String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  tenant          Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  members         WeddingMember[]
+  checklistItems  ChecklistItem[]
+  budgetItems     BudgetItem[]
+  vendors         Vendor[]
+  timelineEntries TimelineEntry[]
+  notes           Note[]
+  moodboardItems  MoodboardItem[]
+
+  @@index([tenantId])
+}
+
+model WeddingMember {
+  weddingId String
+  userId    String
+  role      Role
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@id([weddingId, userId])
+  @@index([weddingId])
+  @@index([userId])
+}
+
+// ─── Checklist ────────────────────────────────────────────────────────────────
+
+model ChecklistItem {
+  id          String            @id @default(cuid())
+  weddingId   String
+  title       String
+  description String?
+  category    ChecklistCategory @default(OTHER)
+  status      ChecklistStatus   @default(PENDING)
+  dueDate     DateTime?
+  dueOffsetDays Int?
+  isCustom    Boolean           @default(false)
+  order       Int               @default(0)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@index([weddingId])
+  @@index([status])
+}
+
+// ─── Budget ───────────────────────────────────────────────────────────────────
+
+model BudgetItem {
+  id            String         @id @default(cuid())
+  weddingId     String
+  vendorId      String?
+  category      BudgetCategory @default(OTHER)
+  name          String
+  estimatedCost Float          @default(0)
+  actualCost    Float?
+  depositAmount Float?
+  depositDueDate DateTime?
+  balanceDueDate DateTime?
+  paymentStatus PaymentStatus  @default(UNPAID)
+  notes         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  wedding Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  vendor  Vendor?  @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+
+  @@index([weddingId])
+  @@index([vendorId])
+}
+
+// ─── Vendors ──────────────────────────────────────────────────────────────────
+
+model Vendor {
+  id          String         @id @default(cuid())
+  weddingId   String
+  category    VendorCategory @default(OTHER)
+  name        String
+  contactName String?
+  email       String?
+  phone       String?
+  website     String?
+  instagram   String?
+  notes       String?
+  booked      Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  wedding     Wedding      @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  budgetItems BudgetItem[]
+  files       VendorFile[]
+
+  @@index([weddingId])
+  @@index([category])
+}
+
+model VendorFile {
+  id           String   @id @default(cuid())
+  vendorId     String
+  uploadedById String
+  name         String
+  url          String
+  size         Int
+  mimeType     String
+  createdAt    DateTime @default(now())
+
+  vendor     Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  uploadedBy User   @relation(fields: [uploadedById], references: [id])
+
+  @@index([vendorId])
+}
+
+// ─── Timeline ─────────────────────────────────────────────────────────────────
+
+model TimelineEntry {
+  id          String       @id @default(cuid())
+  weddingId   String
+  type        TimelineType @default(OTHER)
+  title       String
+  description String?
+  startTime   String
+  endTime     String?
+  order       Int          @default(0)
+  isVendorAlert Boolean    @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@index([weddingId])
+  @@index([order])
+}
+
+// ─── Notes ────────────────────────────────────────────────────────────────────
+
+model Note {
+  id        String       @id @default(cuid())
+  weddingId String
+  userId    String
+  category  NoteCategory @default(GENERAL)
+  title     String?
+  body      String
+  pinned    Boolean      @default(false)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@index([weddingId])
+  @@index([userId])
+}
+
+// ─── Moodboard ────────────────────────────────────────────────────────────────
+
+model MoodboardItem {
+  id        String            @id @default(cuid())
+  weddingId String
+  category  MoodboardCategory @default(GENERAL)
+  imageUrl  String
+  caption   String?
+  order     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  wedding Wedding @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+
+  @@index([weddingId])
+  @@index([category])
+}
+
+// ─── Notifications ────────────────────────────────────────────────────────────
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType @default(GENERAL)
+  title     String
+  body      String?
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
