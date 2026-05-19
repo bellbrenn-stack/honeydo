@@ -62,6 +62,7 @@ export const ModelName = {
   TimelineEntry: 'TimelineEntry',
   Note: 'Note',
   MoodboardItem: 'MoodboardItem',
+  PasswordResetToken: 'PasswordResetToken',
   Notification: 'Notification'
 } as const
 
@@ -253,6 +254,17 @@ export const MoodboardItemScalarFieldEnum = {
 } as const
 
 export type MoodboardItemScalarFieldEnum = (typeof MoodboardItemScalarFieldEnum)[keyof typeof MoodboardItemScalarFieldEnum]
+
+
+export const PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {

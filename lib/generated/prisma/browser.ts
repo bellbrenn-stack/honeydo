@@ -73,6 +73,11 @@ export type Note = Prisma.NoteModel
  */
 export type MoodboardItem = Prisma.MoodboardItemModel
 /**
+ * Model PasswordResetToken
+ * 
+ */
+export type PasswordResetToken = Prisma.PasswordResetTokenModel
+/**
  * Model Notification
  * 
  */
