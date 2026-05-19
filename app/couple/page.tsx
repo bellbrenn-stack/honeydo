@@ -10,14 +10,12 @@ export default async function CoupleDashboard() {
   const weddingId = (session.user as any).weddingId as string | null
   if (!weddingId) redirect("/onboarding")
 
-  const [wedding, checklistItems, budgetItems, vendors] = await Promise.all([
+  const [wedding, checklistItems, budgetItems, vendors, timelineCount] = await Promise.all([
     prisma.wedding.findUnique({ where: { id: weddingId } }),
-    prisma.checklistItem.findMany({
-      where: { weddingId },
-      orderBy: { order: "asc" },
-    }),
+    prisma.checklistItem.findMany({ where: { weddingId }, orderBy: { order: "asc" } }),
     prisma.budgetItem.findMany({ where: { weddingId } }),
     prisma.vendor.findMany({ where: { weddingId } }),
+    prisma.timelineEntry.count({ where: { weddingId } }),
   ])
 
   if (!wedding) redirect("/login")
@@ -28,6 +26,7 @@ export default async function CoupleDashboard() {
       checklistItems={checklistItems}
       budgetItems={budgetItems}
       vendors={vendors}
+      timelineCount={timelineCount}
     />
   )
 }
