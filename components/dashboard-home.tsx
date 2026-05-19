@@ -91,7 +91,7 @@ function FeatureTile({
         <div className="flex items-end gap-2">
           <span
             className={cn("text-4xl font-bold leading-none", textColor)}
-            style={{ fontFamily: "var(--font-playfair)" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             {stat}
           </span>
@@ -147,16 +147,16 @@ export function DashboardHome({
     <div className="flex flex-col gap-8">
 
       {/* ── Hero countdown ───────────────────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-3xl bg-[oklch(0.97_0.04_68)] border border-[oklch(0.91_0.05_68)] px-8 py-8">
+      <div className="relative overflow-hidden rounded-3xl bg-brand-cream border border-[#E8DDD5] px-8 py-8" style={{ boxShadow: "var(--shadow-card)" }}>
         {/* Decorative circles */}
-        <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-[oklch(0.92_0.08_44)]/40 pointer-events-none" />
-        <div className="absolute -right-4 -bottom-10 h-32 w-32 rounded-full bg-[oklch(0.88_0.06_140)]/40 pointer-events-none" />
-        <div className="absolute right-36 -bottom-8 h-20 w-20 rounded-full bg-[oklch(0.92_0.06_18)]/30 pointer-events-none" />
+        <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-brand-coral/15 pointer-events-none" />
+        <div className="absolute -right-4 -bottom-10 h-32 w-32 rounded-full bg-brand-green/15 pointer-events-none" />
+        <div className="absolute right-36 -bottom-8 h-20 w-20 rounded-full bg-brand-peach/20 pointer-events-none" />
 
         <div className="relative flex flex-col gap-1">
           {/* Eyebrow */}
-          <div className="flex items-center gap-2 text-[oklch(0.54_0.08_44)]">
-            <Heart className="h-4 w-4 fill-[oklch(0.64_0.15_44)] text-[oklch(0.64_0.15_44)]" />
+          <div className="flex items-center gap-2" style={{ color: "#B85A3A" }}>
+            <Heart className="h-4 w-4" style={{ fill: "#E8674A", color: "#E8674A" }} />
             <span className="text-sm font-medium tracking-wide uppercase">{wedding.name}</span>
           </div>
 
@@ -164,31 +164,31 @@ export function DashboardHome({
           {daysUntil !== null ? (
             <div className="flex items-end gap-3 mt-1">
               <span
-                className="text-8xl font-bold leading-none text-[oklch(0.34_0.10_44)]"
-                style={{ fontFamily: "var(--font-playfair)" }}
+                className="text-8xl font-bold leading-none"
+                style={{ fontFamily: "var(--font-display)", color: "#1A1A0F" }}
               >
                 {daysUntil}
               </span>
-              <div className="flex flex-col pb-2 text-[oklch(0.48_0.08_44)]">
-                <span className="text-xl font-semibold leading-tight" style={{ fontFamily: "var(--font-playfair)" }}>
+              <div className="flex flex-col pb-2" style={{ color: "#B85A3A" }}>
+                <span className="text-xl font-semibold leading-tight" style={{ fontFamily: "var(--font-display)" }}>
                   {daysUntil === 0 ? "Today's" : "days"}
                 </span>
-                <span className="text-xl font-semibold leading-tight" style={{ fontFamily: "var(--font-playfair)" }}>
+                <span className="text-xl font-semibold leading-tight" style={{ fontFamily: "var(--font-display)" }}>
                   {daysUntil === 0 ? "the day!" : "to go"}
                 </span>
               </div>
             </div>
           ) : (
             <p
-              className="text-3xl font-semibold text-[oklch(0.48_0.08_44)] mt-1"
-              style={{ fontFamily: "var(--font-playfair)" }}
+              className="text-3xl font-semibold mt-1"
+              style={{ fontFamily: "var(--font-display)", color: "#B85A3A" }}
             >
               Set your wedding date
             </p>
           )}
 
           {/* Date line */}
-          <p className="text-sm text-[oklch(0.54_0.06_60)] mt-1">
+          <p className="text-sm mt-1" style={{ color: "#7A6E66" }}>
             {wedding.weddingDate
               ? format(new Date(wedding.weddingDate), "EEEE, MMMM d, yyyy")
               : "No date set yet · add one in Settings"}
@@ -197,8 +197,8 @@ export function DashboardHome({
 
           {/* Tagline */}
           <p
-            className="text-base italic text-[oklch(0.58_0.08_44)]/70 mt-2"
-            style={{ fontFamily: "var(--font-playfair)" }}
+            className="text-base italic mt-2"
+            style={{ fontFamily: "var(--font-display)", color: "#B85A3A", opacity: 0.65 }}
           >
             make planning sweet
           </p>
@@ -208,10 +208,10 @@ export function DashboardHome({
       {/* ── Feature tiles ────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
-        {/* Checklist — sage green */}
+        {/* Checklist — brand green */}
         <FeatureTile
           href="/couple/checklist"
-          bg="bg-[oklch(0.54_0.14_130)]"
+          bg="bg-brand-green"
           iconBg="bg-white/20"
           icon={<CheckCircle2 className="h-6 w-6 text-white" />}
           stat={`${checklist.pct}%`}
@@ -223,11 +223,11 @@ export function DashboardHome({
           progressBg="bg-white/20"
         />
 
-        {/* Budget — cantaloupe */}
+        {/* Budget — brand gold */}
         <FeatureTile
           href="/couple/budget"
-          bg="bg-[oklch(0.64_0.15_44)]"
-          iconBg="bg-white/20"
+          bg="bg-brand-gold"
+          iconBg="bg-white/25"
           icon={<DollarSign className="h-6 w-6 text-white" />}
           stat={budget.total > 0 ? fmt(Math.max(0, budget.remaining)) : "—"}
           statLabel={budget.total > 0 ? "remaining" : ""}
@@ -236,10 +236,10 @@ export function DashboardHome({
           subColor="text-white/70"
         />
 
-        {/* Timeline — coral */}
+        {/* Timeline — brand coral */}
         <FeatureTile
           href="/couple/timeline"
-          bg="bg-[oklch(0.60_0.16_18)]"
+          bg="bg-brand-coral"
           iconBg="bg-white/20"
           icon={<Clock className="h-6 w-6 text-white" />}
           stat={String(timelineCount)}
@@ -249,10 +249,10 @@ export function DashboardHome({
           subColor="text-white/70"
         />
 
-        {/* Vendors — warm peach */}
+        {/* Vendors — brand peach */}
         <FeatureTile
           href="/couple/vendors"
-          bg="bg-[oklch(0.72_0.12_38)]"
+          bg="bg-brand-peach"
           iconBg="bg-white/20"
           icon={<Users className="h-6 w-6 text-white" />}
           stat={String(bookedVendors)}
@@ -262,31 +262,31 @@ export function DashboardHome({
           subColor="text-white/70"
         />
 
-        {/* Notes — warm gold (coming soon) */}
+        {/* Notes — soft gold tint (coming soon) */}
         <FeatureTile
           href="/couple/notes"
-          bg="bg-[oklch(0.86_0.10_78)]"
-          iconBg="bg-[oklch(0.76_0.10_78)]"
-          icon={<FileText className="h-6 w-6 text-[oklch(0.42_0.08_72)]" />}
+          bg="bg-[#FBE9C8]"
+          iconBg="bg-[#F5C27A]/40"
+          icon={<FileText className="h-6 w-6 text-[#B8862A]" />}
           stat="Notes"
           statLabel=""
           sub="Capture ideas, reminders & inspiration"
-          textColor="text-[oklch(0.32_0.08_65)]"
-          subColor="text-[oklch(0.42_0.06_65)]"
+          textColor="text-[#7A5A1A]"
+          subColor="text-[#9A7A3A]"
           comingSoon
         />
 
         {/* Moodboard — blush (coming soon) */}
         <FeatureTile
           href="/couple/moodboard"
-          bg="bg-[oklch(0.90_0.06_350)]"
-          iconBg="bg-[oklch(0.82_0.06_350)]"
-          icon={<ImageIcon className="h-6 w-6 text-[oklch(0.48_0.08_340)]" />}
+          bg="bg-[#FAE8E4]"
+          iconBg="bg-[#F0A896]/40"
+          icon={<ImageIcon className="h-6 w-6 text-[#A8503A]" />}
           stat="Moodboard"
           statLabel=""
           sub="Save inspiration photos for your big day"
-          textColor="text-[oklch(0.34_0.07_340)]"
-          subColor="text-[oklch(0.44_0.05_340)]"
+          textColor="text-[#7A2A1A]"
+          subColor="text-[#9A4A3A]"
           comingSoon
         />
       </div>

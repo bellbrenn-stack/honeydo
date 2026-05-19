@@ -37,7 +37,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[oklch(0.97_0.06_85)] via-[oklch(0.95_0.05_68)] to-[oklch(0.92_0.06_140)]">
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "linear-gradient(135deg, #FFFDF9 0%, #FAF3EE 50%, #F0E8DF 100%)" }}>
       <Card className="w-full max-w-md shadow-xl border-0">
         <CardHeader className="text-center space-y-4 pb-2">
           <div className="flex justify-center">
