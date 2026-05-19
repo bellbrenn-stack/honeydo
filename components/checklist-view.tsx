@@ -108,9 +108,12 @@ function DueDateLabel({ dueDate, status }: { dueDate: Date | null; status: Statu
 }
 
 function StatusIcon({ status }: { status: Status }) {
-  if (status === "COMPLETED") return <CheckCircle2 className="h-5 w-5 text-[oklch(0.52_0.10_140)] shrink-0" />
-  if (status === "IN_PROGRESS") return <MinusCircle className="h-5 w-5 text-[oklch(0.60_0.12_44)] shrink-0" />
-  if (status === "SKIPPED") return <SkipForward className="h-5 w-5 text-muted-foreground shrink-0" />
+  if (status === "COMPLETED")
+    return <CheckCircle2 className="h-5 w-5 shrink-0" style={{ color: "#8DB870" }} />
+  if (status === "IN_PROGRESS")
+    return <MinusCircle className="h-5 w-5 shrink-0" style={{ color: "#F5C27A" }} />
+  if (status === "SKIPPED")
+    return <SkipForward className="h-5 w-5 text-muted-foreground shrink-0" />
   return <Circle className="h-5 w-5 text-muted-foreground shrink-0" />
 }
 
@@ -242,7 +245,11 @@ export function ChecklistView({ wedding, initialItems }: Props) {
         </div>
         <Dialog open={addOpen} onOpenChange={setAddOpen}>
           <DialogTrigger render={
-            <Button size="sm" className="gap-1.5 shrink-0">
+            <Button
+              size="sm"
+              className="gap-1.5 shrink-0 rounded-full px-5"
+              style={{ background: "#8DB870", color: "#fff", boxShadow: "0 2px 8px rgba(141,184,112,0.3)" }}
+            >
               <Plus className="h-4 w-4" />
               Add task
             </Button>
@@ -317,7 +324,28 @@ export function ChecklistView({ wedding, initialItems }: Props) {
 
       {/* Grouped items */}
       <div className="space-y-3">
-        {grouped.size === 0 && (
+        {grouped.size === 0 && items.length === 0 && (
+          <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
+            <div
+              className="flex items-center justify-center w-20 h-20 rounded-3xl text-4xl"
+              style={{ background: "#FEF0D6" }}
+            >
+              🐝
+            </div>
+            <div>
+              <p
+                className="text-xl font-semibold"
+                style={{ fontFamily: "var(--font-display)", color: "#1A1A0F" }}
+              >
+                Nothing to do yet
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Enjoy the honey! Your planning checklist will appear here.
+              </p>
+            </div>
+          </div>
+        )}
+        {grouped.size === 0 && items.length > 0 && (
           <p className="text-muted-foreground text-sm py-8 text-center">No tasks in this view.</p>
         )}
         {[...grouped.entries()].map(([category, catItems]) => {
@@ -351,14 +379,25 @@ export function ChecklistView({ wedding, initialItems }: Props) {
                     const dueDate = getDueDate(item, weddingDate)
                     const done = item.status === "COMPLETED"
                     const skipped = item.status === "SKIPPED"
+                    const overdue = dueDate ? isPast(dueDate) && !done && !skipped : false
+                    const inProgress = item.status === "IN_PROGRESS"
 
                     return (
                       <div
                         key={item.id}
                         className={cn(
-                          "flex items-center gap-3 px-4 py-3 group transition-colors hover:bg-muted/30",
+                          "flex items-center gap-3 px-4 py-3 group transition-colors hover:bg-muted/30 border-l-4",
                           (done || skipped) && "opacity-60"
                         )}
+                        style={{
+                          borderLeftColor: done
+                            ? "#8DB870"
+                            : overdue
+                            ? "#E8674A"
+                            : inProgress
+                            ? "#F5C27A"
+                            : "transparent",
+                        }}
                       >
                         <button
                           onClick={() => cycleStatus(item)}

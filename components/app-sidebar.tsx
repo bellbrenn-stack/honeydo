@@ -4,7 +4,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
 import {
-  Heart,
   LayoutDashboard,
   CheckSquare,
   DollarSign,
@@ -29,15 +28,33 @@ import {
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
+// ─── Brand wordmark (inline, no image file needed) ───────────────────────────
+
+function SidebarWordmark() {
+  return (
+    <span
+      className="font-bold text-lg leading-none"
+      style={{ fontFamily: "var(--font-display)" }}
+    >
+      <span style={{ color: "#8DB870" }}>Honey</span>
+      <span style={{ color: "#E8674A" }}>Do</span>
+    </span>
+  )
+}
+
+// ─── Nav items ────────────────────────────────────────────────────────────────
+
 const NAV_ITEMS = [
-  { href: "/couple", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { href: "/couple",           label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/couple/checklist", label: "Checklist", icon: CheckSquare },
-  { href: "/couple/budget", label: "Budget", icon: DollarSign },
-  { href: "/couple/timeline", label: "Timeline", icon: Clock },
-  { href: "/couple/vendors", label: "Vendors", icon: Users },
-  { href: "/couple/notes", label: "Notes", icon: StickyNote },
+  { href: "/couple/budget",    label: "Budget",    icon: DollarSign },
+  { href: "/couple/timeline",  label: "Timeline",  icon: Clock },
+  { href: "/couple/vendors",   label: "Vendors",   icon: Users },
+  { href: "/couple/notes",     label: "Notes",     icon: StickyNote },
   { href: "/couple/moodboard", label: "Moodboard", icon: Image },
 ]
+
+// ─── AppSidebar ───────────────────────────────────────────────────────────────
 
 interface AppSidebarProps {
   userName: string
@@ -51,21 +68,40 @@ export function AppSidebar({ userName, weddingName }: AppSidebarProps) {
     return exact ? pathname === href : pathname === href || pathname.startsWith(href + "/")
   }
 
+  const initials = userName
+    .split(" ")
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase()
+
   return (
     <Sidebar>
-      <SidebarHeader className="border-b px-4 py-4">
-        <div className="flex items-center gap-2 text-primary">
-          <Heart className="h-5 w-5 fill-primary" />
-          <span className="font-semibold tracking-tight">HoneyDo</span>
+      {/* ── Header ── */}
+      <SidebarHeader className="px-4 py-4" style={{ borderBottom: "1px solid color-mix(in srgb, #FFFFFF 8%, transparent)" }}>
+        <div className="flex items-center gap-2.5">
+          <span className="text-xl leading-none" aria-hidden>🐝</span>
+          <SidebarWordmark />
         </div>
         {weddingName && (
-          <p className="text-xs text-muted-foreground mt-1 truncate">{weddingName}</p>
+          <p
+            className="text-xs mt-1.5 truncate"
+            style={{ color: "rgba(250,243,238,0.45)" }}
+          >
+            {weddingName}
+          </p>
         )}
       </SidebarHeader>
 
+      {/* ── Nav ── */}
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Planning</SidebarGroupLabel>
+          <SidebarGroupLabel
+            className="text-xs uppercase tracking-wider"
+            style={{ color: "rgba(250,243,238,0.35)" }}
+          >
+            Planning
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {NAV_ITEMS.map(({ href, label, icon: Icon, exact }) => (
@@ -84,25 +120,39 @@ export function AppSidebar({ userName, weddingName }: AppSidebarProps) {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t p-3">
+      {/* ── Footer ── */}
+      <SidebarFooter className="p-3" style={{ borderTop: "1px solid color-mix(in srgb, #FFFFFF 8%, transparent)" }}>
         <div className="flex items-center gap-3">
-          <Avatar className="h-7 w-7">
-            <AvatarFallback className="text-xs bg-primary text-primary-foreground">
-              {userName.charAt(0).toUpperCase()}
+          {/* Gold avatar */}
+          <Avatar className="h-8 w-8 shrink-0">
+            <AvatarFallback
+              className="text-xs font-bold"
+              style={{ background: "#F5C27A", color: "#1A1A0F" }}
+            >
+              {initials}
             </AvatarFallback>
           </Avatar>
-          <span className="flex-1 truncate text-sm font-medium">{userName}</span>
+
+          <span
+            className="flex-1 truncate text-sm font-medium"
+            style={{ color: "#FAF3EE" }}
+          >
+            {userName}
+          </span>
+
           <div className="flex items-center gap-1">
             <Link
               href="/couple/settings"
-              className="p-1 rounded text-muted-foreground hover:text-foreground transition-colors"
+              className="p-1 rounded transition-colors"
+              style={{ color: "rgba(250,243,238,0.45)" }}
               title="Settings"
             >
               <Settings className="h-4 w-4" />
             </Link>
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}
-              className="p-1 rounded text-muted-foreground hover:text-foreground transition-colors"
+              className="p-1 rounded transition-colors"
+              style={{ color: "rgba(250,243,238,0.45)" }}
               title="Sign out"
             >
               <LogOut className="h-4 w-4" />
