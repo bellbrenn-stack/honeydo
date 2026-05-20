@@ -135,10 +135,8 @@ function Nav() {
       <nav className="flex items-center gap-2">
         <Link
           href="/login"
-          className="hidden sm:inline-block text-sm font-medium px-4 py-2 rounded-full transition-colors"
+          className="hidden sm:inline-block text-sm font-medium px-4 py-2 rounded-full transition-colors hover:text-[#1A1A0F]"
           style={{ color: C.muted }}
-          onMouseOver={(e) => (e.currentTarget.style.color = C.dark)}
-          onMouseOut={(e) => (e.currentTarget.style.color = C.muted)}
         >
           Sign in
         </Link>
