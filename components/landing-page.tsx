@@ -20,16 +20,51 @@ const HEX_PATTERN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/200
 
 // ─── Wordmark ─────────────────────────────────────────────────────────────────
 
-function Wordmark({ size = "hero" }: { size?: "hero" | "nav" | "footer" }) {
-  const sizes: Record<string, string> = {
-    hero:   "text-[5rem] leading-none md:text-[7rem]",
-    nav:    "text-2xl",
-    footer: "text-3xl",
-  }
+// Checkmark-circle SVG sized relative to current font (1em × 1em)
+function CheckO() {
   return (
-    <span className={`font-bold tracking-tight ${sizes[size]}`} style={{ fontFamily: "var(--font-display)" }}>
-      <span style={{ color: C.green }}>Honey</span>
-      <span style={{ color: C.coral }}>Do</span>
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      style={{ display: "inline-block", width: "0.85em", height: "0.85em", verticalAlign: "-0.1em" }}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="7 12.5 10.5 16 17 9" />
+    </svg>
+  )
+}
+
+function Wordmark({ size = "hero" }: { size?: "hero" | "nav" | "footer" }) {
+  if (size === "nav") {
+    return (
+      <span
+        className="font-bold tracking-tight text-2xl flex items-center"
+        style={{ fontFamily: "var(--font-display)", color: C.green }}
+      >
+        HoneyD<CheckO />
+      </span>
+    )
+  }
+
+  const cfg: Record<string, { cls: string }> = {
+    hero:   { cls: "text-[5rem] leading-none md:text-[7rem]" },
+    footer: { cls: "text-3xl" },
+  }
+  const { cls } = cfg[size]
+  return (
+    <span
+      className={`font-bold tracking-tight leading-none flex flex-col items-center ${cls}`}
+      style={{ fontFamily: "var(--font-display)", color: C.green, lineHeight: 1 }}
+    >
+      <span>Honey</span>
+      <span className="flex items-center">
+        D<CheckO />
+      </span>
     </span>
   )
 }

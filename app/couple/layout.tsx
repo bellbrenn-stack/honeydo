@@ -48,11 +48,14 @@ export default async function CoupleLayout({
             <div className="flex items-center gap-1.5 sm:hidden">
               <span className="text-base leading-none" aria-hidden>🐝</span>
               <span
-                className="font-bold text-base"
-                style={{ fontFamily: "var(--font-display)" }}
+                className="font-bold text-base flex items-center"
+                style={{ fontFamily: "var(--font-display)", color: "#8DB870" }}
               >
-                <span style={{ color: "#8DB870" }}>Honey</span>
-                <span style={{ color: "#E8674A" }}>Do</span>
+                HoneyD
+                <svg viewBox="0 0 24 24" aria-hidden style={{ display: "inline-block", width: "0.85em", height: "0.85em", verticalAlign: "-0.1em" }} fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="7 12.5 10.5 16 17 9" />
+                </svg>
               </span>
             </div>
           </div>
